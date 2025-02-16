@@ -51,7 +51,7 @@ public class SellerDaoJDBC implements SellerDao {
             } else {
                 throw new DbException("Unexpected error! No rows affected! ");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
     }
@@ -72,7 +72,7 @@ public class SellerDaoJDBC implements SellerDao {
 
             st.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
     }
@@ -116,25 +116,6 @@ public class SellerDaoJDBC implements SellerDao {
         } finally {
             DB.closeResultSet(rs);
         }
-    }
-
-    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
-        Seller obj = new Seller();
-        obj.setId(rs.getInt("Id"));
-        obj.setName(rs.getString("Name"));
-        obj.setEmail(rs.getString("Email"));
-        obj.setSalary(rs.getDouble("BaseSalary"));
-        obj.setBirthdate(rs.getDate("BirthDate"));
-        obj.setDepartment(dep);
-
-        return obj;
-    }
-
-    private Department instantiateDepartment(ResultSet rs) throws SQLException {
-        Department dep = new Department();
-        dep.setId(rs.getInt("DepartmentId"));
-        dep.setName(rs.getString("depName"));
-        return dep;
     }
 
     @Override
@@ -201,5 +182,24 @@ public class SellerDaoJDBC implements SellerDao {
         } finally {
             DB.closeResultSet(rs);
         }
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+        Seller obj = new Seller();
+        obj.setId(rs.getInt("Id"));
+        obj.setName(rs.getString("Name"));
+        obj.setEmail(rs.getString("Email"));
+        obj.setSalary(rs.getDouble("BaseSalary"));
+        obj.setBirthdate(rs.getDate("BirthDate"));
+        obj.setDepartment(dep);
+
+        return obj;
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        Department dep = new Department();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("depName"));
+        return dep;
     }
 }
