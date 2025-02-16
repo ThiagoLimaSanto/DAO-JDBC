@@ -68,7 +68,7 @@ public class SellerDaoJDBC implements SellerDao {
             st.setDate(3, new Date(obj.getBirthdate().getTime()));
             st.setDouble(4, obj.getSalary());
             st.setInt(5, obj.getDepartment().getId());
-            st.setInt(6, obj.getId()); 
+            st.setInt(6, obj.getId());
 
             st.executeUpdate();
 
@@ -79,8 +79,16 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void deleteByID(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteByID'");
+        try (PreparedStatement st = conn.prepareStatement(
+                "DELETE FROM seller WHERE Id = ?");) {
+
+            st.setInt(1, id);
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
